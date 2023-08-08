@@ -77,7 +77,7 @@ def send_email(email, password):
 # Streamlit应用界面
 st.title('邮箱邮件发送应用')
 if st.button('发送邮件'):
-    send_email(email, password)
+    send_email(username, password)
     
 # label = st.selectbox('选择邮件标签', ['INBOX', 'Sent', 'Spam', 'Custom Label'])
 # keyword = st.text_input('搜索关键字')
