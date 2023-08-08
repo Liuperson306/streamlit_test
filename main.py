@@ -44,7 +44,7 @@ def parse_email(raw_email):
     body = '\n'.join(lines[2:])
     return {'sender': sender, 'subject': subject, 'body': body}
 
-def send_email(email, password)
+def send_email(email, password):
 
     # 构建邮件主体
     msg = MIMEMultipart()
