@@ -10,10 +10,6 @@ from email.header import decode_header
 import numpy as np
 import random
 
-
-myemail = st.secrets["my_email"]["email"]  # 邮箱账号
-password =  st.secrets["my_email"]["password"]  # 邮箱密码
-
 def send_email(email, password, array):
     # 构建邮件主体
     msg = MIMEMultipart()
@@ -167,15 +163,6 @@ def page(random_num):
     if "button_clicked" not in st.session_state:
         st.session_state.button_clicked = False
 
-    if "data_face" and "data_lip" not in st.session_state:
-        # 初始化data变量
-        data_face = [1 for x in range(0, 12)]
-        data_lip = [1 for x in range(0, 12)]
-    else:
-        # 恢复data变量的状态
-        data_face = st.session_state["data_face"]
-        data_lip = st.session_state["data_lip"]
-
     for num in range(12):
         # 显示页面内容
         #play_video(file_list[num-1].rstrip(),num)
@@ -198,8 +185,19 @@ def page(random_num):
 
 
 if __name__ == '__main__':
-
+    myemail = st.secrets["my_email"]["email"]  # 邮箱账号
+    password =  st.secrets["my_email"]["password"]  # 邮箱密码
     array = read_email(myemail, password)
+    
+    if "data_face" and "data_lip" not in st.session_state:
+    # 初始化data变量
+        data_face = [1 for x in range(0, 12)]
+        data_lip = [1 for x in range(0, 12)]
+    else:
+        # 恢复data变量的状态
+        data_face = st.session_state["data_face"]
+        data_lip = st.session_state["data_lip"]
+
     st.write(array)
     random_num = 0
     # array = [0,0,0,0,0,0,0,0,0,0]
