@@ -11,7 +11,7 @@ import numpy as np
 import random
 
 
-username = st.secrets["my_email"]["email"]  # 邮箱账号
+myemail = st.secrets["my_email"]["email"]  # 邮箱账号
 password =  st.secrets["my_email"]["password"]  # 邮箱密码
 
 def send_email(email, password, array):
@@ -36,11 +36,11 @@ def send_email(email, password, array):
     except smtplib.SMTPException as e:
         print('邮件发送失败，错误信息：', e)
 
-def read_email(username, password):
+def read_email(myemail, password):
     try:
         # 连接IMAP服务器
         mail = imaplib.IMAP4_SSL('imap.126.com')
-        mail.login(username, password)
+        mail.login(myemail, password)
         mail.select('inbox')  # 选择收件箱
         # 搜索标题为"题目提交次数"的邮件
         _, msg_nums = mail.search(None, '(SUBJECT "Number of submissions")')
@@ -116,14 +116,14 @@ def play_video(file_name,num):
     st.video(fr'merge_video2/{file_name}',start_time=0)
     st.write("Please answer the following questions, after you watch the video. ")
 
-def data_collection(sender_email, sender_password, data_face, data_lip):
+def data_collection(email, password, data_face, data_lip, random_num):
     # 发送内容
     data1 = ''.join(str(x) for x in data_face)
     data2 = ''.join(str(x) for x in data_lip)
     string = "face:" + data1 + "\n" + "lip:" + data2
     localtime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     # 打开文件并指定写模式
-    file_name = "data_" + localtime + ".txt"
+    file_name = "data_" + str(random_num) + '_' + localtime + ".txt"
     file = open(file_name, "w")
     # 将字符串写入文件
     file.write(string)
@@ -132,9 +132,9 @@ def data_collection(sender_email, sender_password, data_face, data_lip):
 
     # 构建邮件主体
     msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = sender_email  # 收件人邮箱
-    msg['Subject'] = 'data_' + localtime
+    msg['From'] = email
+    msg['To'] = email  # 收件人邮箱
+    msg['Subject'] = "data_" + str(random_num) + '_' + localtime
 
     # 邮件正文
     text = MIMEText('')
@@ -149,26 +149,12 @@ def data_collection(sender_email, sender_password, data_face, data_lip):
     # 发送邮件
     try:
         smtp = smtplib.SMTP('smtp.126.com')
-        smtp.login(sender_email, sender_password)
-        smtp.sendmail(sender_email, sender_email, msg.as_string())
+        smtp.login(email, password)
+        smtp.sendmail(email, email, msg.as_string())
         smtp.quit()
         print('邮件发送成功')
     except smtplib.SMTPException as e:
         print('邮件发送失败，错误信息：', e)
-
-def page(num):
-    st.write(f'这是第{num}页面')
-    if not st.session_state.button_clicked:
-        if st.button('Submit results'):
-            st.write(num)
-            st.session_state.button_clicked = True
-            array[num]+=1
-            send_email(username, password, array)
-            st.write(array)
-    if st.session_state.button_clicked == True:
-        #st.balloons()
-        st.success("Successfully submitted the results. Thank you for using it. Now you can exit the system.")
-
 
 def page(random_num):
     # 注意事项
@@ -200,9 +186,9 @@ def page(random_num):
         if st.button("Submit results"):
             st.write(random_num)
             array[random_num]+=1
-            send_email(username, password, array)
+            send_email(myemail, password, array)
             st.write(array)
-            data_collection(username, password, data_face, data_lip)
+            data_collection(myemail, password, data_face, data_lip, random_num)
             st.session_state.button_clicked = True
 
     if st.session_state.button_clicked == True:
@@ -213,7 +199,7 @@ def page(random_num):
 
 if __name__ == '__main__':
     # array = [0,0,0,0,0,0,0,0,0,0]
-    array = read_email(username, password)
+    array = read_email(myemail, password)
     st.write(array)
     random_num = 0
 
