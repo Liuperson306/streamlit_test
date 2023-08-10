@@ -198,18 +198,18 @@ def page(random_num):
 
 
 if __name__ == '__main__':
-    # array = [0,0,0,0,0,0,0,0,0,0]
+
     array = read_email(myemail, password)
     st.write(array)
     random_num = 0
-
+    # array = [0,0,0,0,0,0,0,0,0,0]
     if 'random_num' not in st.session_state:
         st.session_state.random_num = random.randint(0, 9)
-    if array[st.session_state.random_num] == 3:
-        while True:
-            st.session_state.random_num = random.randint(0, 9)
-            if array[st.session_state.random_num] < 3 :
-                break
+        if array[st.session_state.random_num] == 3:
+            while True:
+                st.session_state.random_num = random.randint(0, 9)
+                if array[st.session_state.random_num] < 3 :
+                    break
 
     random_num = st.session_state.random_num
     st.write(f'这是第{random_num+1}份试卷')
