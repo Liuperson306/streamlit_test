@@ -107,9 +107,9 @@ def get_ans(answer_str):
     
 # 播放Video文件下的视频
 def play_video(file_name,num):
-    st.subheader(fr"Video{num}/12")
+    st.subheader(fr"Video{num+1}/12")
     # st.subheader(file_name)
-    st.video(fr'merge_video2/{file_name}',start_time=0)
+    st.video(fr'video/{file_name}',start_time=0)
     st.write("Please answer the following questions, after you watch the video. ")
 
 def data_collection(email, password, data_face, data_lip, random_num):
@@ -155,17 +155,17 @@ def data_collection(email, password, data_face, data_lip, random_num):
 def page(random_num):
     # 注意事项
     instrunction()
-    #file = open(r"file_list.txt", "r", encoding='utf-8') # 保证每次读取的文件顺序相同
-    #file_list = file.readlines()
-    #file.close()
-    # max_num = len(file_list)
+    file = open(r"file_names.txt", "r", encoding='utf-8') # 保证每次读取的文件顺序相同
+    file_list = file.readlines()
+    file.close()
 
     if "button_clicked" not in st.session_state:
         st.session_state.button_clicked = False
 
     for num in range(12):
         # 显示页面内容
-        #play_video(file_list[num-1].rstrip(),num)
+        st.write(f'这是第{num+1+random_num*12}个视频，名称为{file_list[num+random_num*12].rstrip()}')
+        play_video(file_list[num+random_num*12].rstrip(),num)
         st.write(f'这是第{num+1}题')
         QA(data_face, data_lip, num+1)
 
@@ -176,8 +176,7 @@ def page(random_num):
             send_email(myemail, password, array)
             st.write(array)
             data_collection(myemail, password, data_face, data_lip, random_num)
-            st.session_state.button_clicked = True
-
+            st.session_state.button_clicked = True # 按钮设置为True
     if st.session_state.button_clicked == True:
         st.balloons()
         st.success("Successfully submitted the results. Thank you for using it. Now you can exit the system.")
