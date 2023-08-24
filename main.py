@@ -55,7 +55,7 @@ def read_email(myemail, password):
             if isinstance(subject, bytes):
                 subject = subject.decode(encoding)
 
-            sender = email.utils.parseaddr(email_message['from'])[1]
+            #sender = email.utils.parseaddr(email_message['from'])[1]
             body = ""
             # 提取邮件正文
             if email_message.is_multipart():
@@ -76,20 +76,22 @@ def read_email(myemail, password):
 def instrunction():
     st.subheader("Instructions: ")
     text1 = 'Please watch the short videos (duration 4~7s) of two animated talking heads. \
-            You need to choose the talking head (the left or the right) that moves more naturally in terms of the full face and the lips. '
-    text2 = '**Reminder 1**: Please **turn on the sound on your computer** while you are watching the videos. '
-    text3 = '**Reminder 2**: Some of the videos (one or two) are qualification testing videos.\
-             **Your task might get rejected if you make the choices randomly**.'
-    st.write(text1)
-    st.write(text2)
-    st.write(text3)
+            You need to choose the talking head (the :blue[left] or the :blue[right]) that moves more naturally in terms of the full :blue[face] and the :blue[lips]. '
+    text2 = 'Please :blue[turn on the sound] on your computer while you are watching the videos.'
+    st.markdown(text1)
+    st.markdown(text2)
 
 def QA(data_face, data_lip, num):
     # 定义问题和选项
-    question_1 = "Comparing the two full faces (Left and Right), which one looks more realistic?"
-    options_1 = ["The Left one looks more realistic", "The Right one looks more realistic"]
-    question_2 = "Comparing the lips of two faces, which one is more in sync with audio?"
-    options_2 = ["The Left one is more in sync with audio", "The Right one is more in sync with audio"]
+    question_1 = "Comparing the two full :blue[faces], which one looks more :blue[realistic]?"
+    options_1 = ["Left", "Right"]
+    question_2 = "Comparing the :blue[lips] of two faces, which one is more :blue[in sync with audio]?"
+    options_2 = ["Left", "Right"]
+
+    # question_1 = "Comparing the two full :blue[faces]:neutral_face:, which one looks more :blue[realistic]?"
+    # options_1 = ["Left", "Right"]
+    # question_2 = "Comparing the :blue[lips]:lips: of two faces, which one is more :blue[in sync with audio]?"
+    # options_2 = ["Left", "Right"]
 
     # 显示问题并获取用户的答案
     answer_1 = st.radio(label=question_1, options=options_1, key=fr"button{num}.1")
@@ -177,15 +179,6 @@ def page(random_num):
     # Ours vs. MeshTalk 31-60
     # Ours vs. FaceFormer 61-90
     # Ours vs. GT 91-120
-    # title_num = 1
-    # for cate in range(4):
-    #     for num in range(3):
-    #         # 显示页面内容
-    #         st.write(f'这是第{num+1+random_num*3+cate*30}个视频，名称为{file_list[num+random_num*3+cate*30].rstrip()}')
-    #         play_video(file_list[num+random_num*3+cate*30].rstrip(),num)
-    #         st.write(f'这是第{title_num}题')
-    #         QA(data_face, data_lip, title_num)
-    #         title_num+=1
 
     for num in range(12):
         # 显示页面内容
