@@ -9,9 +9,6 @@ import email
 from email.header import decode_header
 import numpy as np
 import random
-import streamlit_lottie
-from streamlit_lottie import st_lottie
-
 
 @st.cache_data
 def send_email(email, password, array):
