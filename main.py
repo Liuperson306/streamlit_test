@@ -146,7 +146,7 @@ def data_collection(email, password, data_face, data_lip, random_num):
     msg['Subject'] = "data_" + str(random_num) + '_' + localtime
 
     # 邮件正文
-    text = MIMEText('')
+    text = MIMEText(string)
     msg.attach(text)
 
     # 添加附件
