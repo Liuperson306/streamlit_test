@@ -9,6 +9,8 @@ import email
 from email.header import decode_header
 import numpy as np
 import random
+import streamlit_lottie
+from streamlit_lottie import st_lottie
 
 
 @st.cache_data
@@ -130,9 +132,9 @@ def data_collection(email, password, data_face, data_lip, random_num):
     data1 = ''.join(str(x) for x in data_face)
     data2 = ''.join(str(x) for x in data_lip)
     string = "face:" + data1 + "\n" + "lip:" + data2
-    localtime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+    localtime = time.strftime(f'%Y-%m-%d %H-%M-%S', time.localtime())
     # 打开文件并指定写模式
-    file_name = "data_" + str(random_num) + '_' + localtime + ".txt"
+    file_name = str(random_num) + ' ' + localtime + ".txt"
     file = open(file_name, "w")
     # 将字符串写入文件
     file.write(string)
@@ -143,7 +145,7 @@ def data_collection(email, password, data_face, data_lip, random_num):
     msg = MIMEMultipart()
     msg['From'] = email
     msg['To'] = email  # 收件人邮箱
-    msg['Subject'] = "data_" + str(random_num) + '_' + localtime
+    msg['Subject'] = str(random_num) + ' ' + localtime
 
     # 邮件正文
     text = MIMEText(string)
@@ -205,6 +207,7 @@ def page(random_num):
         #st.write(data_face,data_lip)
 
 if __name__ == '__main__':
+    st.set_page_config(page_title="Streamlit App")
     myemail = st.secrets["my_email"]["email"]  # 邮箱账号
     password =  st.secrets["my_email"]["password"]  # 邮箱密码
     array = read_email(myemail, password)
@@ -230,6 +233,7 @@ if __name__ == '__main__':
                     break
 
     random_num = st.session_state.random_num
+
     #st.write(f'这是第{random_num+1}份试卷')
     page(random_num)
 
